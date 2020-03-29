@@ -25,20 +25,26 @@ response = requests.request("POST", url, headers=headers, data = payload)
 stores = json.loads(response.text)
 
 with open('ChipotleLocations.csv', mode='w') as CSVFile:
-    writer = csv.writer(CSVFile, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    writer = csv.writer(CSVFile, delimiter=",")
 
     writer.writerow([
         "restaurantNumber",
-        "restaurantName"
+        "restaurantName", 
+        "latitude", 
+        "longitude"
     ])
 
     for store in stores['data']:
         row = []
         store_id = store["restaurantNumber"]
         store_name = store["restaurantName"]
-        city = store["city"]
+        latitude = store["addresses"][0]["latitude"]
+        longitude = store["addresses"][0]["longitude"]
+        
 
         row.append(store_id)
         row.append(store_name)
-        row.append(city)
+        row.append(latitude)
+        row.append(longitude)
+        
         writer.writerow(row)
